@@ -1,24 +1,20 @@
 // Retrieve tasks and nextId from localStorage
+let taskList = JSON.parse(localStorage.getItem('tasks'));
+let nextId = JSON.parse(localStorage.getItem('nextId'));
 
-// const tasks = document.getElementById("#formModal");
 
-// const task = document.getElementById("#task-title");
-// const dueDate = document.getElementById("#task-due-date");
-// const taskDescription = document.getElementById("task-description");
 
-// const taskList = [];
+const taskTitle = $('#task-title');
+const taskDueDate = $('#task-due-date');
+const taskDescription = $('#task-description');
 
-let task = {
-    title: taskName,
+let tasks = {
+    title: taskTitle,
     dueDate: taskDueDate,
     description: taskDescription,
-    uniqueId: taskId,
+    // uniqueId: taskId,
     status: 'to-do',
-}
-
-
-
-
+};
 
 function getFromLocalStorage() {
     let taskList = JSON.parse(localStorage.getItem('tasks'));
@@ -33,29 +29,23 @@ function saveInLocalStorage(taskList) {
     localStorage.setItem('tasks', JSON.stringify(taskList));
 }
 
-function readIdFromLocalStorage() {
-    let nextId = JSON.parse(localStorage.getItem('nextId'));
-    if(!nextId) {
-        nextId = [];
-    }
-    return nextId;
-}
+// function readIdFromLocalStorage() {
+//     let nextId = JSON.parse(localStorage.getItem('nextId'));
+//     if(!nextId) {
+//         nextId = [];
+//     }
+//     return nextId;
+// }
 
-function saveIdToLocalStorage() {
-    localStorage.setItem('nextId', JSON.stringify(nextId));
-}
+// function saveIdToLocalStorage() {
+//     localStorage.setItem('nextId', JSON.stringify(nextId));
+// }
 
-
-
-
-
-
-
-// Todo: create a function to generate a unique task id
-function generateTaskId() {
-    let id = "id" + Math.random().toString(16).slice(2)
-    console.log(id)
-}     
+// // Todo: create a function to generate a unique task id
+// function generateTaskId() {
+//     let taskId = "id" + Math.random().toString(16).slice(2)
+//     console.log(id)
+// }     
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
@@ -69,8 +59,30 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
+    event.preventDefault();
+
+    const taskTitle = $('#task-title').val();
+    const taskDueDate = $('#task-due-date').val();
+    const taskDescription = $('#task-description').val();
+
+    let tasks = {
+        title: taskTitle,
+        dueDate: taskDueDate,
+        description: taskDescription,
+        // uniqueId: taskId,
+        status: 'to-do'
+    };
+
+    taskList.push(tasks);
+    displayTask(tasks);
+
+$('#add-task').on('click', function(event) {
+    // Call the handleAddTask function when the button is clicked
+    handleAddTask(event);
+});
 
 }
+
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
@@ -86,10 +98,7 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
 
 
-    addTaskButton.addEventListener('click', function(event) {
-        event.preventDefault();
-    
-    });
+   
 
 
 
