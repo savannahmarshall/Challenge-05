@@ -1,35 +1,28 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem('tasks'));
-let nextId = JSON.parse(localStorage.getItem('nextId'));
+let taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+let nextId = JSON.parse(localStorage.getItem('nextId')) || [];
 
-const taskTitle = $('#task-title');
-const taskDueDate = $('#task-due-date');
-const taskDescription = $('#task-description');
+// const taskTitle = $('#task-title');
+// const taskDueDate = $('#task-due-date');
+// const taskDescription = $('#task-description');
 
-let tasks = {
-    title: taskTitle,
-    dueDate: taskDueDate,
-    description: taskDescription,
-    // uniqueId: taskId,
-    status: 'to-do',
-};
+// let tasks = {
+//     title: taskTitle,
+//     dueDate: taskDueDate,
+//     description: taskDescription,
+//     uniqueId: taskId,
+//     status: 'to-do',
+// };
 function getFromLocalStorage() {
-    let taskList = JSON.parse(localStorage.getItem('tasks'));
-    if (!taskList) {
-        taskList = [];
-    }
-    return taskList;
+    return JSON.parse(localStorage.getItem('tasks'))  || [];
 }
 function saveInLocalStorage(taskList) {
     localStorage.setItem('tasks', JSON.stringify(taskList));
 }
-function readIdFromLocalStorage() {
-    let nextId = JSON.parse(localStorage.getItem('nextId'));
-    if(!nextId) {
-        nextId = [];
-    }
-    return nextId;
-}
+// function readIdFromLocalStorage() {
+//     let nextId = JSON.parse(localStorage.getItem('nextId')) ||[];
+//     return nextId;
+// }
 function saveIdToLocalStorage() {
     localStorage.setItem('nextId', JSON.stringify(nextId));
 }
@@ -40,91 +33,109 @@ function generateTaskId(uniqueId) {
     
     // Combine uniqueId and random number to create the task id
     const taskId = uniqueId + '-' + randomNumber;
-    
     return taskId;
 }
-const taskId = generateTaskId('Task ID');
-console.log(taskId);
-
 
 // Todo: create a function to create a task card
-function createTaskCard(title, description, dueDate) {
-
+function createTaskCard(tasks) {
+    // const taskList = getFromLocalStorage();
 
 //create HTML elements for the task card
 const taskCard = document.createElement('div');
-taskCard.classList.add('task-card');
+taskCard.setAttribute('class','task-card');
 
 const taskTitle = document.createElement('h3');
-taskTitle.textConent = title;
+taskTitle.textContent = tasks.title;
 
 const taskDescription = document.createElement('p');
-taskDescription.textConent = description;
+taskDescription.textContent = tasks.description;
 
 const taskDueDate = document.createElement('p');
-taskDueDate.textConent = `Due Date: ${dueDate}`;
+taskDueDate.textContent = `Due Date: ${tasks.dueDate}`;
 
-// Appending the HTML elements to the task card
+// Appending the elements to the task card
 
-taskCard.appendChild (taskTitle);
-taskCard.appendChild (taskDescription);
-taskCard.appendChild (taskDueDate);
+taskCard.appendChild(taskTitle);
+taskCard.appendChild(taskDescription);
+taskCard.appendChild(taskDueDate);
+
+return taskCard;
 
 // Append the task card elements to the columns in the task board
 
-const taskBoard = document.getElementById('todo-cards')
-taskBoard.appendChild(taskCard);
+// const taskBoard = document.getElementById('todo-cards')
+// taskBoard.appendChild(taskCard);
 
 
 // Select the columns where you want to append the task cards
-const toDoColumn = document.getElementById('todo-cards');
-const inProgressColumn = document.getElementById('in-progress-cards');
-const doneColumn = document.getElementById('done-cards');
 
 
-// Append the task card to the to do column
-toDoColumn.appendChild(taskCard);
-inProgressColumn.appendChild(taskCard);
-doneColumn.appendChild(taskCard);
+
+// // Append the task card to the to do column
+// toDoColumn.appendChild(taskCard);
+// inProgressColumn.appendChild(taskCard);
+// doneColumn.appendChild(taskCard);
 }
 
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-// created empty columns so that no duplicates will happen
-    toDoColumn.empty();
-    inProgressColumn.empty();
-    doneColumn.empty();
-    const taskList = readfromStorage();
+    // gets reference to the task columns by ID
+    const toDoColumn = document.getElementById('todo-cards');
+    const inProgressColumn = document.getElementById('in-progress-cards');
+    const doneColumn = document.getElementById('done-cards');
+   
+    // clears existing content in the columns
+    toDoColumn.innerHTML = '';
+    inProgressColumn.innerHTML = '';
+    doneColumn.innerHTML = '';
 
+    // retrieves the task list from local storage
+    const taskList = getFromLocalStorage();
+
+    // iterates over each of the tasks and appends the task cards to the corresponding columns
     for (let task of taskList) {
+        // Call createTaskCard function to create a task card for the current task
+        const taskCard = createTaskCard(task);
+
         if (task.status === 'to-do') {
-            toDoColumn.append(createTaskCard(task));
+            toDoColumn.appendChild(taskCard);
         } else if (task.status === 'in-progress') {
-            inProgressColumn.append(createTaskCard(task));
+            inProgressColumn.appendChild(taskCard);
         } else if (task.status === 'done') {
-            doneColumn.append(createTaskCard(task));
-        }
+            doneColumn.appendChild(taskCard);
         }
     }
+}
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
     event.preventDefault();
+
+    const taskId = generateTaskId('Task ID');
+    console.log(taskId);
     const taskTitle = $('#task-title').val();
     const taskDueDate = $('#task-due-date').val();
     const taskDescription = $('#task-description').val();
-    let tasks = {
+
+    let taskList = getFromLocalStorage();
+
+    taskList.push({
         title: taskTitle,
         dueDate: taskDueDate,
         description: taskDescription,
-        // uniqueId: taskId,
+        uniqueId: taskId,
         status: 'to-do'
-    };
-    let taskList = [];
-    taskList.push(tasks);
+    });
 
     saveInLocalStorage(taskList);
+
+    $('#task-title').val('');
+    $('#task-due-date').val('');
+    $('#task-description').val('');
+
+    renderTaskList();
+
 }
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
@@ -144,5 +155,7 @@ $(function () {
       changeMonth: true,
       changeYear: true,
     });
+
+    renderTaskList();
   });
 });
