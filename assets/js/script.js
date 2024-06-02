@@ -53,6 +53,18 @@ taskDescription.textContent = tasks.description;
 const taskDueDate = document.createElement('p');
 taskDueDate.textContent = `Due Date: ${tasks.dueDate}`;
 
+//calculate the difference between the due date and current date
+const dueDate = new Date(tasks.dueDate);
+const currentDate = new Date();
+const differenceInDays = Math.ceil((dueDate - currentDate) / (1000 * 60 * 60 * 24));
+
+// Apply corresponding CSS class based on the difference
+if (differenceInDays < 0) {
+    taskCard.classList.add('overdue');
+} else if (differenceInDays < 3) {
+    taskCard.classList.add('due-soon');
+}
+
 // Appending the elements to the task card
 
 taskCard.appendChild(taskTitle);
@@ -60,21 +72,6 @@ taskCard.appendChild(taskDescription);
 taskCard.appendChild(taskDueDate);
 
 return taskCard;
-
-// Append the task card elements to the columns in the task board
-
-// const taskBoard = document.getElementById('todo-cards')
-// taskBoard.appendChild(taskCard);
-
-
-// Select the columns where you want to append the task cards
-
-
-
-// // Append the task card to the to do column
-// toDoColumn.appendChild(taskCard);
-// inProgressColumn.appendChild(taskCard);
-// doneColumn.appendChild(taskCard);
 }
 
 
@@ -107,6 +104,22 @@ function renderTaskList() {
         }
     }
 }
+
+//makes cards draggable
+
+$('.draggable').draggable( {
+    opacity: 0.7,
+    zIndex: 100,
+    helper: function (e) {
+        const original = $(e.target).hasClass('ui-draggable')
+        ? $(e.target)
+        : $(e.target).closest('ui.draggable');
+        return original.clone().css({
+            width: original.outerWidth(),
+        })
+    }
+})
+
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
