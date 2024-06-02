@@ -42,7 +42,8 @@ function createTaskCard(tasks) {
 
 //create HTML elements for the task card
 const taskCard = document.createElement('div');
-taskCard.setAttribute('class','task-card');
+taskCard.setAttribute('class','task-card draggable');
+taskCard.setAttribute('draggable', 'true');
 
 const taskTitle = document.createElement('h3');
 taskTitle.textContent = tasks.title;
@@ -106,7 +107,6 @@ function renderTaskList() {
 }
 
 //makes cards draggable
-
 $('.draggable').draggable( {
     opacity: 0.7,
     zIndex: 100,
@@ -154,14 +154,58 @@ function handleAddTask(event){
 function handleDeleteTask(event){
 }
 // Todo: create a function to handle dropping a task into a new status lane
-function handleDrop(event, ui) {
-}
+// Make columns droppable
+$('.column').droppable({
+    accept: '.task-card.draggable', // Specify which elements can be dropped
+    tolerance: 'pointer', // Mouse pointer must overlap droppable area
+    drop: function(event, ui) {
+        // Get dropped task card
+        const droppedTask = ui.draggable;
+
+        // Get dropped column's ID
+        const droppedColumnId = $(this).attr('id');
+
+        // Get task ID from dropped task card
+        const taskId = droppedTask.attr('id');
+
+        // Update task status based on dropped column
+        let status;
+        if (droppedColumnId === 'todo-cards') {
+            status = 'to-do';
+        } else if (droppedColumnId === 'in-progress-cards') {
+            status = 'in-progress';
+        } else if (droppedColumnId === 'done-cards') {
+            status = 'done';
+        }
+
+        // Update task status in taskList (assuming taskList is updated globally)
+        const updatedTask = taskList.find(task => task.id === taskId);
+        updatedTask.status = status;
+
+        // Save updated taskList to local storage
+        saveInLocalStorage(taskList);
+
+        // Re-render task list to reflect changes
+        renderTaskList();
+    }
+});
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
   $('#add-task').on('click', function(event) {
     // Call the handleAddTask function when the button is clicked
     handleAddTask(event);
 });
+//code for initializing modal
+const myModal = new bootstrap.Modal(document.getElementById('formModal'));
+
+// Handle Add Task button click event
+$('#add-task').click(function() {
+  
+  // Close modal
+  myModal.hide();
+});
+
+
 // Datepicker widget for due date
 $(function () {
     $('#task-due-date').datepicker({
