@@ -108,18 +108,21 @@ function renderTaskList() {
 });
 
 //add droppable feature to columns
-$('#to-do, #in-progress, #done').droppable({
+$('#todo-cards, #in-progress-cards, #done-cards').droppable({
     //specify which elements can be dropped
     accept: '.task-card.draggable', 
     // mouse pointer must be overlapping the droppable area
     tolerance: 'pointer',
     drop: function(event, ui) {
+        console.log("hit");
         // Get dropped task card
         const droppedTask = ui.draggable;
+        console.log(droppedTask);
         // Get dropped column's ID
         const droppedColumnId = $(this).attr('id');
         // Get task ID from dropped task card
-        const taskId = droppedTask.attr('id');
+        const taskId = droppedTask.attr("taskId");
+        console.log(taskId);
         // Update task status based on dropped column
         let status;
         if (droppedColumnId === 'todo-cards') {
@@ -129,6 +132,12 @@ $('#to-do, #in-progress, #done').droppable({
         } else if (droppedColumnId === 'done-cards') {
             status = 'done';
         }
+
+    //     //make lanes droppable
+    // $( ".droppable" ).droppable({
+    //     accept: '.draggable',
+    //      drop: handleDrop, 
+    //       });
 
         // Update task status in taskList (assuming taskList is updated globally)
         const updatedTaskIndex = taskList.findIndex(task => task.uniqueId === taskId);
