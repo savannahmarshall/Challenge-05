@@ -32,7 +32,7 @@ function createTaskCard(tasks) {
 //create HTML elements for the task card
 const taskCard = document.createElement('div');
 taskCard.classList.add('task-card', 'draggable', 'droppable');
-taskCard.classList.add('border', 'border-light', 'rounded');
+taskCard.classList.add('border', 'border-grey', 'rounded');
 taskCard.classList.add('draggable', 'true',);
 taskCard.setAttribute('data-unique-id', tasks.uniqueId);
 taskCard.style.marginBottom = '20px'; //adds margin to create space between the task cards
@@ -43,11 +43,9 @@ const taskTitle = document.createElement('h3');
 taskTitle.classList.add('class', 'card-header');
 taskTitle.textContent = tasks.title;
 
-// const taskBody = document.createElement('div')
-// taskBody.setAttribute('class', 'card-body');
-
 const taskDescription = document.createElement('p');
 taskDescription.classList.add('class', 'card-text');
+taskDescription.style.marginTop = '10px';
 taskDescription.textContent = tasks.description;
 
 const taskDueDate = document.createElement('p');
@@ -57,7 +55,7 @@ taskDueDate.textContent = `Due Date: ${tasks.dueDate}`;
 const deleteButton = document.createElement('button');
 deleteButton.textContent = 'Delete';
 deleteButton.classList.add('delete-btn');
-deleteButton.classList.add('bg-danger','border-white', 'text-white', 'rounded');
+deleteButton.classList.add('bg-danger','border-danger', 'text-white', 'rounded');
 
 
 //add event listener for the delete button
@@ -72,7 +70,7 @@ const dueDate = dayjs(tasks.dueDate);
 const currentDate = dayjs();
 const differenceInDays = dueDate.diff(currentDate, 'day');
 
-// Apply matching CSS class for red or yellow based on the difference 
+// Apply bootstrap classes for red or yellow based on the difference 
 if (differenceInDays < 0) {
     taskCard.classList.add('bg-danger','text-white'); //applies the danger bootstrap class for tasks that are overdue
 } else if (differenceInDays < 3) {
@@ -82,11 +80,9 @@ if (differenceInDays < 0) {
 // Appending the elements to the task card
 
 taskCard.appendChild(taskTitle);
-// taskCard.appendChild(taskBody);
 taskCard.appendChild(taskDescription);
 taskCard.appendChild(taskDueDate);
 taskCard.appendChild(deleteButton);
-// console.log(taskCard);
 
 return taskCard;
 }
