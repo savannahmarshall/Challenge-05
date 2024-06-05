@@ -15,7 +15,7 @@ function saveIdToLocalStorage() {
     localStorage.setItem('nextId', JSON.stringify(nextId));
 }
 
-// Todo: create a function to generate a unique task id
+//function to generate a unique task id
 function generateTaskId(uniqueId) {
     // Generate a random number
     const randomNumber = Math.floor(Math.random() * 1000000);
@@ -25,7 +25,7 @@ function generateTaskId(uniqueId) {
     return taskId;
 }
 
-// Todo: create a function to create a task card
+//function to create a task card
 function createTaskCard(tasks) {
 
 //create HTML elements for the task card
@@ -49,7 +49,7 @@ deleteButton.classList.add('delete-btn');
 
 //add event listener for the delete button
 deleteButton.addEventListener('click', function() {
-    handleDeleteTask(task.uniqueId);
+    handleDeleteTask(tasks.uniqueId);
 
 });
 
@@ -77,7 +77,7 @@ taskCard.appendChild(deleteButton);
 return taskCard;
 }
 
-// Todo: create a function to handle deleting a task
+//function to handle deleting a task
 function handleDeleteTask(taskId){
     let taskList = getFromLocalStorage();
 
@@ -98,7 +98,7 @@ function handleDeleteTask(taskId){
 }
 
 
-// Todo: create a function to render the task list and make cards draggable
+//function to render the task list and make cards draggable
 function renderTaskList() {
     // gets reference to the task columns by ID
     const toDoColumn = document.getElementById('todo-cards');
@@ -186,7 +186,7 @@ $('#to-do, #in-progress, #done').droppable({
 
 }
 
-// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
+// when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
     // Datepicker widget for due date
     $('#task-due-date').datepicker({
@@ -213,11 +213,9 @@ $('#add-task').click(function() {
   myModal.hide();
     })
 
-// $(document).ready(function() {
-//     renderTaskList();
 });
 
-// Todo: create a function to handle adding a new task
+// function to handle adding a new task
 function handleAddTask(event){
     event.preventDefault();
 
@@ -246,8 +244,3 @@ function handleAddTask(event){
 
 }
 
-    
-
-
-// Todo: create a function to handle dropping a task into a new status lane
-// Make columns droppable
