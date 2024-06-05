@@ -43,6 +43,17 @@ taskDescription.textContent = tasks.description;
 const taskDueDate = document.createElement('p');
 taskDueDate.textContent = `Due Date: ${tasks.dueDate}`;
 
+const deleteButton = document.createElement('button');
+deleteButton.textContent = 'Delete';
+deleteButton.classList.add('delete-btn');
+
+//add event listener for the delete button
+deleteButton.addEventListener('click', function() {
+    handleDeleteTask(task.uniqueId);
+
+});
+
+
 //calculate the difference between the due date and current date
 const dueDate = new Date(tasks.dueDate);
 const currentDate = new Date();
@@ -60,9 +71,30 @@ if (differenceInDays < 0) {
 taskCard.appendChild(taskTitle);
 taskCard.appendChild(taskDescription);
 taskCard.appendChild(taskDueDate);
+taskCard.appendChild(deleteButton);
 // console.log(taskCard);
 
 return taskCard;
+}
+
+// Todo: create a function to handle deleting a task
+function handleDeleteTask(taskId){
+    let taskList = getFromLocalStorage();
+
+    //find the index of the task with the given taskID
+    const taskIndex = taskList.findIndex(task => task.uniqueId === taskId);
+
+    if (taskIndex !== -1) {
+        // remove the task from the taskList
+    taskList.splice(taskIndex, 1);
+
+    //save taskList to local storage
+    saveInLocalStorage(taskList);
+
+    //rebder the task list again
+    renderTaskList();
+    }
+    
 }
 
 
@@ -213,9 +245,7 @@ function handleAddTask(event){
     renderTaskList();
 
 }
-// Todo: create a function to handle deleting a task
-function handleDeleteTask(event){
-}
+
     
 
 
