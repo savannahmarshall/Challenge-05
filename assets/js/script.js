@@ -32,6 +32,7 @@ function createTaskCard(tasks) {
 const taskCard = document.createElement('div');
 taskCard.classList.add('task-card', 'draggable', 'droppable');
 taskCard.setAttribute('draggable', 'true');
+taskCard.setAttribute('data-unique-id', tasks.uniqueId);
 
 const taskTitle = document.createElement('h3');
 taskTitle.textContent = tasks.title;
@@ -59,6 +60,7 @@ if (differenceInDays < 0) {
 taskCard.appendChild(taskTitle);
 taskCard.appendChild(taskDescription);
 taskCard.appendChild(taskDueDate);
+// console.log(taskCard);
 
 return taskCard;
 }
@@ -108,38 +110,36 @@ function renderTaskList() {
 });
 
 //add droppable feature to columns
-$('#todo-cards, #in-progress-cards, #done-cards').droppable({
+$('#to-do, #in-progress, #done').droppable({
     //specify which elements can be dropped
-    accept: '.task-card.draggable', 
-    // mouse pointer must be overlapping the droppable area
+    accept: '.task-card', 
     tolerance: 'pointer',
     drop: function(event, ui) {
-        console.log("hit");
+        // console.log(event, "hit");
         // Get dropped task card
         const droppedTask = ui.draggable;
-        console.log(droppedTask);
+        // console.log(droppedTask);
         // Get dropped column's ID
         const droppedColumnId = $(this).attr('id');
+        console.log("droppedColumnId", droppedColumnId)
         // Get task ID from dropped task card
-        const taskId = droppedTask.attr("taskId");
+        const taskId = droppedTask[0].dataset.uniqueId;
         console.log(taskId);
         // Update task status based on dropped column
         let status;
-        if (droppedColumnId === 'todo-cards') {
+        if (droppedColumnId === 'to-do') {
             status = 'to-do';
-        } else if (droppedColumnId === 'in-progress-cards') {
+            console.log("hit to-do")
+        } else if (droppedColumnId === 'in-progress') {
             status = 'in-progress';
-        } else if (droppedColumnId === 'done-cards') {
+            console.log("hit in-progress")
+        } else if (droppedColumnId === 'done') {
             status = 'done';
+            console.log("hit done")
         }
 
-    //     //make lanes droppable
-    // $( ".droppable" ).droppable({
-    //     accept: '.draggable',
-    //      drop: handleDrop, 
-    //       });
 
-        // Update task status in taskList (assuming taskList is updated globally)
+        // Update task status in taskList 
         const updatedTaskIndex = taskList.findIndex(task => task.uniqueId === taskId);
         if (updatedTaskIndex !== -1) {
             taskList[updatedTaskIndex].status = status;
@@ -221,4 +221,3 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 // Make columns droppable
-
