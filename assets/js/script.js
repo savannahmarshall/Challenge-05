@@ -15,13 +15,14 @@ function saveIdToLocalStorage() {
     localStorage.setItem('nextId', JSON.stringify(nextId));
 }
 
-//function to generate a unique task id
+// Todo: create a function to generate a unique task id
 function generateTaskId(uniqueId) {
     // Generate a random number
     const randomNumber = Math.floor(Math.random() * 1000000);
     
     // Combine uniqueId and random number to create the task id
-    const taskId = uniqueId + '-' + randomNumber;
+    const taskId = (uniqueId + '-' + randomNumber).replace(/\s+/g, '-');
+
     return taskId;
 }
 
@@ -31,16 +32,22 @@ function createTaskCard(tasks) {
 //create HTML elements for the task card
 const taskCard = document.createElement('div');
 taskCard.classList.add('task-card', 'draggable', 'droppable');
-taskCard.setAttribute('draggable', 'true');
+taskCard.classList.add('draggable', 'true');
 taskCard.setAttribute('data-unique-id', tasks.uniqueId);
 
 const taskTitle = document.createElement('h3');
+taskTitle.classList.add('class', 'card-header');
 taskTitle.textContent = tasks.title;
 
+// const taskBody = document.createElement('div')
+// taskBody.setAttribute('class', 'card-body');
+
 const taskDescription = document.createElement('p');
+taskDescription.classList.add('class', 'card-text');
 taskDescription.textContent = tasks.description;
 
 const taskDueDate = document.createElement('p');
+taskDueDate.classList.add('class', 'card-text');
 taskDueDate.textContent = `Due Date: ${tasks.dueDate}`;
 
 const deleteButton = document.createElement('button');
@@ -55,20 +62,21 @@ deleteButton.addEventListener('click', function() {
 
 
 //calculate the difference between the due date and current date
-const dueDate = new Date(tasks.dueDate);
-const currentDate = new Date();
-const differenceInDays = Math.ceil((dueDate - currentDate) / (1000 * 60 * 60 * 24));
+const dueDate = dayjs(tasks.dueDate);
+const currentDate = dayjs();
+const differenceInDays = dueDate.diff(currentDate, 'day');
 
 // Apply matching CSS class for red or yellow based on the difference 
 if (differenceInDays < 0) {
-    taskCard.classList.add('overdue');
+    taskCard.classList.add('bg-warning','text-white');
 } else if (differenceInDays < 3) {
-    taskCard.classList.add('due-soon');
+    taskCard.classList.add('bg-danger','text-white');
 }
 
 // Appending the elements to the task card
 
 taskCard.appendChild(taskTitle);
+// taskCard.appendChild(taskBody);
 taskCard.appendChild(taskDescription);
 taskCard.appendChild(taskDueDate);
 taskCard.appendChild(deleteButton);

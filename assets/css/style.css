@@ -7,14 +7,6 @@ body {
   min-height: 60vh;
 }
 
-.due-soon {
-  background-color:yellow;
-}
-
-.overdue {
-  background-color:red;
-}
-
 .task-card {
   margin: 0 auto;
 }
