@@ -32,8 +32,12 @@ function createTaskCard(tasks) {
 //create HTML elements for the task card
 const taskCard = document.createElement('div');
 taskCard.classList.add('task-card', 'draggable', 'droppable');
-taskCard.classList.add('draggable', 'true');
+taskCard.classList.add('border', 'border-light', 'rounded');
+taskCard.classList.add('draggable', 'true',);
 taskCard.setAttribute('data-unique-id', tasks.uniqueId);
+taskCard.style.marginBottom = '20px'; //adds margin to create space between the task cards
+taskCard.style.width = '280px';
+taskCard.style.padding = '10px';
 
 const taskTitle = document.createElement('h3');
 taskTitle.classList.add('class', 'card-header');
@@ -53,6 +57,8 @@ taskDueDate.textContent = `Due Date: ${tasks.dueDate}`;
 const deleteButton = document.createElement('button');
 deleteButton.textContent = 'Delete';
 deleteButton.classList.add('delete-btn');
+deleteButton.classList.add('bg-danger','border-white', 'text-white', 'rounded');
+
 
 //add event listener for the delete button
 deleteButton.addEventListener('click', function() {
@@ -68,9 +74,9 @@ const differenceInDays = dueDate.diff(currentDate, 'day');
 
 // Apply matching CSS class for red or yellow based on the difference 
 if (differenceInDays < 0) {
-    taskCard.classList.add('bg-warning','text-white');
+    taskCard.classList.add('bg-danger','text-white'); //applies the danger bootstrap class for tasks that are overdue
 } else if (differenceInDays < 3) {
-    taskCard.classList.add('bg-danger','text-white');
+    taskCard.classList.add('bg-warning','text-white'); //applies the warning boostrap class for tasks that are due within 3 days
 }
 
 // Appending the elements to the task card
