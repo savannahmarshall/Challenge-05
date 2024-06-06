@@ -19,6 +19,7 @@ Please click [here](https://savannahmarshall.github.io/Project-Task-Board/) for 
 ## Credits
 * Day.js
 * Bootstrap
+* JavaScript
 
 ### License
 N/A
