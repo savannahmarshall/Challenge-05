@@ -17,8 +17,8 @@ The link to the deployed application is here: https://savannahmarshall.github.io
 ![alt text](https://github.com/savannahmarshall/Project-Task-Board/blob/main/assets/challenge-5%20screenshot.png)
 
 ## Credits
-Day.js
-Bootstrap
+* Day.js
+* Bootstrap
 
 ### License
 N/A
