@@ -14,6 +14,8 @@ Upon viewing the page, you will see three columns where you can place tasks depe
 
 The link to the deployed application is here: https://savannahmarshall.github.io/Project-Task-Board/.
 
+Please click [here](https://savannahmarshall.github.io/Project-Task-Board/) for the deployed application.
+
 ![alt text](https://github.com/savannahmarshall/Project-Task-Board/blob/main/assets/challenge-5%20screenshot.png)
 
 ## Credits
